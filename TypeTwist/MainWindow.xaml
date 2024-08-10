@@ -1,0 +1,109 @@
+﻿<Window x:Class="TypeTwist.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:viewModels="clr-namespace:TypeTwist.ViewModels"
+        Title="TypeTwist" Height="720" Width="1280"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown">
+
+    <Window.DataContext>
+        <viewModels:MainWindowViewModel/>
+    </Window.DataContext>
+
+    <Window.Resources>
+        <!-- Buton stili tanımı -->
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#444444"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="15"
+                                x:Name="BorderElement">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="BorderElement"
+                                        Property="Background"
+                                        Value="DarkGray"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="BorderElement"
+                                        Property="Background"
+                                        Value="Gray"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <!-- Grid İçeriği -->
+    <Grid>
+        <!-- Üst Panel -->
+        <Border Background="#222222" CornerRadius="10,10,0,0" BorderBrush="Transparent" BorderThickness="1" Height="45" VerticalAlignment="Top" Width="Auto" MaxWidth="1260" MinWidth="300" Panel.ZIndex="100">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Minimize Butonu -->
+                <Button Grid.Column="0" Width="30" Height="30" Click="MinimizeButton_Click">
+                    <TextBlock Text="–" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                </Button>
+
+                <!-- Close Butonu -->
+                <Button Grid.Column="2" Width="30" Height="30" Click="CloseButton_Click">
+                    <TextBlock Text="X" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                </Button>
+            </Grid>
+        </Border>
+
+        <!-- Ana İçerik Paneli -->
+        <Border Background="#444444" Margin="10" CornerRadius="10" BorderBrush="Transparent" BorderThickness="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="300"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Sol Panel -->
+                <Border Grid.Column="0" Background="#333333" Margin="5" CornerRadius="10" BorderBrush="Transparent" BorderThickness="1">
+                    <StackPanel Margin="10">
+                        <!-- WPM -->
+                        <TextBlock Text="WPM: 0" Foreground="White" Margin="0,0,0,10"/>
+                        <!-- Accuracy -->
+                        <TextBlock Text="Accuracy: 0%" Foreground="White" Margin="0,0,0,10"/>
+                        <!-- Geçen Zaman -->
+                        <TextBlock Text="Time: 0s" Foreground="White" Margin="0,0,0,20"/>
+                        <!-- Başlat Butonu -->
+                        <TextBlock x:Name="KeyboardLayoutTextBlock" Text="{Binding CurrentLanguage}" 
+                                HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24"/>
+                        <Button Command="{Binding StartCommand}" Content="Start" 
+                                HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,20"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Sağ Panel -->
+                <Border Grid.Column="1" Background="#555555" Margin="5" CornerRadius="10" BorderBrush="Transparent" BorderThickness="1">
+                    <TextBox x:Name="TypingTextBox" VerticalAlignment="Stretch" Margin="10" Background="#333333" Foreground="White" AcceptsReturn="True" TextWrapping="Wrap"/>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
